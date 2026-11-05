@@ -11,16 +11,27 @@ so windows and the desktop don't get rearranged.
 
 ## Install
 
+**From the KDE Store:** System Settings > Window Management > KWin Scripts >
+Get New..., search for "Lights Out", install it, then tick it and click Apply.
+This gives you the shortcuts and settings; the `lights-out` command-line tool
+comes with the source below.
+
+**From source:**
+
 ```bash
+git clone https://github.com/Brunight/lights-out.git
+cd lights-out
 ./install.sh
 ```
 
 This installs the script with `kpackagetool6`, enables it, and links the
-`lights-out` CLI into `~/.local/bin`. You can also toggle the script in
-System Settings > Window Management > KWin Scripts ("Lights Out").
+`lights-out` CLI into `~/.local/bin`.
 
 KWin caches QML files until it restarts, so after upgrading a running script,
 log out and back in.
+
+To build the archive uploaded to the KDE Store, run `./package.sh`
+(writes `dist/lights-out-VERSION.kwinscript`).
 
 ## Use
 

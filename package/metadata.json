@@ -7,12 +7,14 @@
                 "Name": "Brunight"
             }
         ],
-        "Description": "Turn off individual screens by covering them with black, without disconnecting them",
+        "Description": "Turn off individual screens by covering them with black, without disconnecting them. Shortcuts: Meta+Ctrl+L toggles the screen under the cursor, Meta+Ctrl+Shift+L uncovers all, Meta+Ctrl+Alt+L turns off every screen.",
         "Icon": "video-display",
         "Id": "lightsout",
         "License": "GPL-3.0-or-later",
         "Name": "Lights Out",
-        "Version": "1.0"
+        "Version": "1.0",
+        "Website": "https://github.com/Brunight/lights-out",
+        "BugReportUrl": "https://github.com/Brunight/lights-out/issues"
     },
     "X-Plasma-API": "declarativescript",
     "X-KDE-ConfigModule": "kwin/effects/configs/kcm_kwin4_genericscripted"
