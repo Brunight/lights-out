@@ -1,3 +1,5 @@
+<img src="logo/lights-out.svg" width="96" align="right" alt="">
+
 # Lights Out
 
 "Turn off" specific screens in KDE Plasma 6 (Wayland) without disconnecting
