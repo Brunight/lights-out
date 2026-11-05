@@ -9,8 +9,8 @@
         ],
         "Description": "Turn off individual screens by covering them with black, without disconnecting them",
         "Icon": "video-display",
-        "Id": "screenblack",
-        "Name": "Screen Black",
+        "Id": "lightsout",
+        "Name": "Lights Out",
         "Version": "1.0"
     },
     "X-Plasma-API": "declarativescript"

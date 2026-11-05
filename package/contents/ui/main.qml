@@ -1,5 +1,5 @@
 /*
-    Screen Black: "turn off" individual screens by covering them with a black
+    Lights Out: "turn off" individual screens by covering them with a black
     window drawn by KWin itself. The outputs stay enabled and in the layout,
     so windows and the desktop don't get rearranged. Useful on OLED and
     local-dimming panels, where black pixels or zones are off.
@@ -38,9 +38,9 @@ Item {
         setCovered(name, !isCovered(name));
     }
 
-    // The `screen-black` CLI reads the state back from these journal lines.
-    onCoveredChanged: console.info("screen-black: covered=" + covered.join(","))
-    Component.onCompleted: console.info("screen-black: covered=")
+    // The `lights-out` CLI reads the state back from these journal lines.
+    onCoveredChanged: console.info("lights-out: covered=" + covered.join(","))
+    Component.onCompleted: console.info("lights-out: covered=")
 
     // Forget outputs that were unplugged or disabled, so they come back
     // uncovered.
@@ -79,10 +79,10 @@ Item {
     }
 
     // --------------------------------------------------------- shortcuts ---
-    // The `screen-black` CLI invokes these by name; keep the names stable.
+    // The `lights-out` CLI invokes these by name; keep the names stable.
     ShortcutHandler {
-        name: "Screen Black: Toggle Screen Under Cursor"
-        text: "Screen Black: Toggle the screen under the cursor"
+        name: "Lights Out: Toggle Screen Under Cursor"
+        text: "Lights Out: Toggle the screen under the cursor"
         sequence: "Meta+Ctrl+L"
         onActivated: {
             const screen = Workspace.screenAt(Workspace.cursorPos);
@@ -92,8 +92,8 @@ Item {
     }
 
     ShortcutHandler {
-        name: "Screen Black: Uncover All"
-        text: "Screen Black: Uncover all screens"
+        name: "Lights Out: Uncover All"
+        text: "Lights Out: Uncover all screens"
         sequence: "Meta+Ctrl+Shift+L"
         onActivated: root.covered = []
     }
@@ -103,8 +103,8 @@ Item {
     // Screen" action. Any input wakes the screens. If PowerDevil isn't
     // reachable, cover every screen instead.
     ShortcutHandler {
-        name: "Screen Black: Turn Off All Screens"
-        text: "Screen Black: Turn off all screens (power off)"
+        name: "Lights Out: Turn Off All Screens"
+        text: "Lights Out: Turn off all screens (power off)"
         sequence: "Meta+Ctrl+Alt+L"
         onActivated: dpmsOff.call()
     }
@@ -122,8 +122,8 @@ Item {
     Instantiator {
         model: Workspace.screens
         delegate: ShortcutHandler {
-            name: "Screen Black: Toggle " + modelData.name
-            text: "Screen Black: Toggle " + modelData.name
+            name: "Lights Out: Toggle " + modelData.name
+            text: "Lights Out: Toggle " + modelData.name
             onActivated: root.toggle(modelData.name)
         }
     }

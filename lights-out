@@ -1,38 +1,38 @@
 #!/usr/bin/env bash
-# screen-black: command-line front end for the "Screen Black" KWin script,
+# lights-out: command-line front end for the "Lights Out" KWin script,
 # which "turns off" individual screens by covering them with black.
 set -euo pipefail
 
 usage() {
     cat <<'EOF'
 Usage:
-  screen-black on OUTPUT...        cover the given outputs
-  screen-black off [OUTPUT...]     uncover (no args = all)
-  screen-black toggle [OUTPUT...]  toggle (no args = the screen under the cursor)
-  screen-black status
-  screen-black list                list available output names
+  lights-out on OUTPUT...        cover the given outputs
+  lights-out off [OUTPUT...]     uncover (no args = all)
+  lights-out toggle [OUTPUT...]  toggle (no args = the screen under the cursor)
+  lights-out status
+  lights-out list                list available output names
 
 OUTPUT is a connector name as shown by `kscreen-doctor -o` (DP-3, HDMI-A-1...).
 Global shortcuts (System Settings > Keyboard > Shortcuts > KWin):
   Meta+Ctrl+L        toggle the screen under the cursor
   Meta+Ctrl+Shift+L  uncover all screens
   Meta+Ctrl+Alt+L    power off all screens (DPMS, via PowerDevil)
-  Screen Black: Toggle OUTPUT (one per output, unbound by default)
+  Lights Out: Toggle OUTPUT (one per output, unbound by default)
 EOF
 }
 
-die() { echo "screen-black: $*" >&2; exit 1; }
+die() { echo "lights-out: $*" >&2; exit 1; }
 
 QDBUS=$(command -v qdbus6 || command -v qdbus) || die "qdbus6 not found"
 
 invoke() {
     "$QDBUS" org.kde.kglobalaccel /component/kwin \
-        org.kde.kglobalaccel.Component.invokeShortcut "Screen Black: $1" >/dev/null
+        org.kde.kglobalaccel.Component.invokeShortcut "Lights Out: $1" >/dev/null
 }
 
 require_script() {
-    [[ $("$QDBUS" org.kde.KWin /Scripting org.kde.kwin.Scripting.isScriptLoaded screenblack) == true ]] ||
-        die "the Screen Black KWin script isn't running (run install.sh, or enable it in System Settings > Window Management > KWin Scripts)"
+    [[ $("$QDBUS" org.kde.KWin /Scripting org.kde.kwin.Scripting.isScriptLoaded lightsout) == true ]] ||
+        die "the Lights Out KWin script isn't running (run install.sh, or enable it in System Settings > Window Management > KWin Scripts)"
 }
 
 # Covered outputs, one per line. The script logs its state on every change;
@@ -42,7 +42,7 @@ covered() {
     inv=$(systemctl --user show -p InvocationID --value plasma-kwin_wayland.service)
     [[ -n $inv ]] || die "can't find the running KWin instance (plasma-kwin_wayland.service)"
     journalctl --user "_SYSTEMD_INVOCATION_ID=$inv" -r -o cat --no-pager |
-        grep -m1 '^screen-black: covered=' | cut -d= -f2 | tr ',' '\n' | sed '/^$/d' || true
+        grep -m1 '^lights-out: covered=' | cut -d= -f2 | tr ',' '\n' | sed '/^$/d' || true
 }
 
 outputs() {
@@ -95,7 +95,7 @@ case $cmd in
             if grep -qxF "$o" <<<"$act"; then echo "$o: black"; else echo "$o: normal"; fi
         done ;;
     on)
-        [[ $# -gt 0 ]] || die "give at least one output (see \`screen-black list\`)"
+        [[ $# -gt 0 ]] || die "give at least one output (see \`lights-out list\`)"
         require_script; check_outputs "$@"
         for o in "$@"; do set_output "$o" yes; done ;;
     off)
@@ -118,7 +118,7 @@ case $cmd in
             done
         fi ;;
     *)
-        echo "screen-black: unknown command '$cmd'" >&2
+        echo "lights-out: unknown command '$cmd'" >&2
         usage >&2
         exit 1 ;;
 esac

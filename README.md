@@ -1,4 +1,4 @@
-# screen-black
+# Lights Out
 
 "Turn off" specific screens in KDE Plasma 6 (Wayland) without disconnecting
 them, by covering them with black. Useful on OLED and local-dimming panels,
@@ -16,8 +16,8 @@ so windows and the desktop don't get rearranged.
 ```
 
 This installs the script with `kpackagetool6`, enables it, and links the
-`screen-black` CLI into `~/.local/bin`. You can also toggle the script in
-System Settings > Window Management > KWin Scripts ("Screen Black").
+`lights-out` CLI into `~/.local/bin`. You can also toggle the script in
+System Settings > Window Management > KWin Scripts ("Lights Out").
 
 KWin caches QML files until it restarts, so after upgrading a running script,
 log out and back in.
@@ -31,16 +31,16 @@ Global shortcuts (change them in System Settings > Keyboard > Shortcuts > KWin):
 | `Meta+Ctrl+L`       | toggle the screen under the cursor |
 | `Meta+Ctrl+Shift+L` | uncover all screens                |
 | `Meta+Ctrl+Alt+L`   | power off all screens (DPMS); any input wakes them |
-| (unbound)           | "Screen Black: Toggle OUTPUT", one per output |
+| (unbound)           | "Lights Out: Toggle OUTPUT", one per output |
 
 From a terminal:
 
 ```bash
-screen-black on HDMI-A-1 DP-3   # cover outputs (names from `screen-black list`)
-screen-black off [OUTPUT...]    # uncover (no args = all)
-screen-black toggle [OUTPUT...] # no args = the screen under the cursor
-screen-black status
-screen-black list
+lights-out on HDMI-A-1 DP-3   # cover outputs (names from `lights-out list`)
+lights-out off [OUTPUT...]    # uncover (no args = all)
+lights-out toggle [OUTPUT...] # no args = the screen under the cursor
+lights-out status
+lights-out list
 ```
 
 The CLI needs `qdbus6`, `kscreen-doctor` and systemd's journal. It triggers the
