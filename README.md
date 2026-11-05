@@ -50,8 +50,6 @@ press the shortcut.
 
 ## Command line
 
-
-
 ```bash
 lights-out on HDMI-A-1 DP-3   # cover outputs (names from `lights-out list`)
 lights-out off [OUTPUT...]    # uncover (no args = all)
