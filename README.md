@@ -30,6 +30,7 @@ Global shortcuts (change them in System Settings > Keyboard > Shortcuts > KWin):
 | ------------------- | ---------------------------------- |
 | `Meta+Ctrl+L`       | toggle the screen under the cursor |
 | `Meta+Ctrl+Shift+L` | uncover all screens                |
+| `Meta+Ctrl+Alt+L`   | power off all screens (DPMS); any input wakes them |
 | (unbound)           | "Screen Black: Toggle OUTPUT", one per output |
 
 From a terminal:

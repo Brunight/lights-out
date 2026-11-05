@@ -98,6 +98,27 @@ Item {
         onActivated: root.covered = []
     }
 
+    // Really power off every screen (DPMS), like `kscreen-doctor --dpms off`.
+    // Scripts can't run commands, so ask PowerDevil through its own "Turn Off
+    // Screen" action. Any input wakes the screens. If PowerDevil isn't
+    // reachable, cover every screen instead.
+    ShortcutHandler {
+        name: "Screen Black: Turn Off All Screens"
+        text: "Screen Black: Turn off all screens (power off)"
+        sequence: "Meta+Ctrl+Alt+L"
+        onActivated: dpmsOff.call()
+    }
+
+    DBusCall {
+        id: dpmsOff
+        service: "org.kde.kglobalaccel"
+        path: "/component/org_kde_powerdevil"
+        dbusInterface: "org.kde.kglobalaccel.Component"
+        method: "invokeShortcut"
+        arguments: ["Turn Off Screen"]
+        onFailed: root.covered = Workspace.screens.map(s => s.name).sort()
+    }
+
     Instantiator {
         model: Workspace.screens
         delegate: ShortcutHandler {
