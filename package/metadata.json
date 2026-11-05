@@ -13,5 +13,6 @@
         "Name": "Lights Out",
         "Version": "1.0"
     },
-    "X-Plasma-API": "declarativescript"
+    "X-Plasma-API": "declarativescript",
+    "X-KDE-ConfigModule": "kwin/effects/configs/kcm_kwin4_genericscripted"
 }

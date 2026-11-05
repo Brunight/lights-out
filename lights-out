@@ -16,7 +16,7 @@ OUTPUT is a connector name as shown by `kscreen-doctor -o` (DP-3, HDMI-A-1...).
 Global shortcuts (System Settings > Keyboard > Shortcuts > KWin):
   Meta+Ctrl+L        toggle the screen under the cursor
   Meta+Ctrl+Shift+L  uncover all screens
-  Meta+Ctrl+Alt+L    power off all screens (DPMS, via PowerDevil)
+  Meta+Ctrl+Alt+L    turn off all screens (power off or black, see Configure)
   Lights Out: Toggle OUTPUT (one per output, unbound by default)
 EOF
 }

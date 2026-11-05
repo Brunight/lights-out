@@ -38,6 +38,10 @@ Item {
         setCovered(name, !isCovered(name));
     }
 
+    function coverAll() {
+        covered = Workspace.screens.map(s => s.name).sort();
+    }
+
     // The `lights-out` CLI reads the state back from these journal lines.
     onCoveredChanged: console.info("lights-out: covered=" + covered.join(","))
     Component.onCompleted: console.info("lights-out: covered=")
@@ -98,15 +102,42 @@ Item {
         onActivated: root.covered = []
     }
 
-    // Really power off every screen (DPMS), like `kscreen-doctor --dpms off`.
-    // Scripts can't run commands, so ask PowerDevil through its own "Turn Off
-    // Screen" action. Any input wakes the screens. If PowerDevil isn't
-    // reachable, cover every screen instead.
+    // Turn off every screen. The TurnOffMode setting picks how:
+    // - "PowerDevil" (default): really power them off (DPMS), like
+    //   `kscreen-doctor --dpms off`. Scripts can't run commands, so this asks
+    //   PowerDevil through its own "Turn Off Screen" action. Any input wakes
+    //   the screens. If PowerDevil isn't reachable, cover them instead.
+    // - "Black": cover every screen.
     ShortcutHandler {
         name: "Lights Out: Turn Off All Screens"
-        text: "Lights Out: Turn off all screens (power off)"
+        text: "Lights Out: Turn off all screens"
         sequence: "Meta+Ctrl+Alt+L"
-        onActivated: dpmsOff.call()
+        onActivated: reloadConfig.call()
+    }
+
+    // The settings dialog doesn't tell KWin to reload its config, so do it
+    // here before reading TurnOffMode. KWin reloads 200 ms after the request
+    // and scripts get no signal when it's done, hence the timer.
+    DBusCall {
+        id: reloadConfig
+        service: "org.kde.KWin"
+        path: "/KWin"
+        dbusInterface: "org.kde.KWin"
+        method: "reconfigure"
+        onFinished: turnOffTimer.restart()
+        onFailed: turnOffTimer.restart()
+    }
+
+    Timer {
+        id: turnOffTimer
+        interval: 400
+        onTriggered: {
+            const mode = String(KWin.readConfig("TurnOffMode", "PowerDevil"));
+            if (mode === "Black" || mode === "1")
+                root.coverAll();
+            else
+                dpmsOff.call();
+        }
     }
 
     DBusCall {
@@ -116,7 +147,7 @@ Item {
         dbusInterface: "org.kde.kglobalaccel.Component"
         method: "invokeShortcut"
         arguments: ["Turn Off Screen"]
-        onFailed: root.covered = Workspace.screens.map(s => s.name).sort()
+        onFailed: root.coverAll()
     }
 
     Instantiator {

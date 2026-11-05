@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LightsOutConfigForm</class>
+ <widget class="QWidget" name="LightsOutConfigForm">
+  <property name="windowTitle">
+   <string>Lights Out</string>
+  </property>
+  <layout class="QFormLayout" name="formLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="turnOffModeLabel">
+     <property name="text">
+      <string>&quot;Turn off all screens&quot; shortcut:</string>
+     </property>
+     <property name="buddy">
+      <cstring>kcfg_TurnOffMode</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QComboBox" name="kcfg_TurnOffMode">
+     <item>
+      <property name="text">
+       <string>Power off the screens (PowerDevil)</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Cover every screen with black</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QLabel" name="turnOffModeHelp">
+     <property name="text">
+      <string>Powered-off screens wake on any input. Black covers stay until uncovered (Meta+Ctrl+Shift+L). If PowerDevil isn't running, screens are covered with black.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

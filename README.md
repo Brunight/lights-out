@@ -30,10 +30,27 @@ Global shortcuts (change them in System Settings > Keyboard > Shortcuts > KWin):
 | ------------------- | ---------------------------------- |
 | `Meta+Ctrl+L`       | toggle the screen under the cursor |
 | `Meta+Ctrl+Shift+L` | uncover all screens                |
-| `Meta+Ctrl+Alt+L`   | power off all screens (DPMS); any input wakes them |
+| `Meta+Ctrl+Alt+L`   | turn off all screens (see Settings) |
 | (unbound)           | "Lights Out: Toggle OUTPUT", one per output |
 
-From a terminal:
+## Settings
+
+System Settings > Window Management > KWin Scripts > Lights Out > Configure:
+
+- **"Turn off all screens" shortcut** (`Meta+Ctrl+Alt+L`):
+  - *Power off the screens (PowerDevil)*, the default: powers them off
+    (DPMS) through PowerDevil's "Turn Off Screen" action, like
+    `kscreen-doctor --dpms off`. Any input wakes them. If PowerDevil isn't
+    running, the screens get covered with black instead.
+  - *Cover every screen with black*: covers stay until you uncover them.
+
+Or from a terminal: `kwriteconfig6 --file kwinrc --group Script-lightsout
+--key TurnOffMode Black` (or `PowerDevil`). Changes apply the next time you
+press the shortcut.
+
+## Command line
+
+
 
 ```bash
 lights-out on HDMI-A-1 DP-3   # cover outputs (names from `lights-out list`)
