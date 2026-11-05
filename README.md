@@ -9,6 +9,8 @@ It's a KWin script: KWin itself draws a black window over each covered output,
 above panels and fullscreen windows. Outputs stay enabled and in the layout,
 so windows and the desktop don't get rearranged.
 
+![Three monitors, the middle one covered by Lights Out](screenshots/desktop.png)
+
 ## Install
 
 **From the KDE Store:** System Settings > Window Management > KWin Scripts >
@@ -58,6 +60,8 @@ System Settings > Window Management > KWin Scripts > Lights Out > Configure:
 Or from a terminal: `kwriteconfig6 --file kwinrc --group Script-lightsout
 --key TurnOffMode Black` (or `PowerDevil`). Changes apply the next time you
 press the shortcut.
+
+![Lights Out settings](screenshots/settings.png)
 
 ## Command line
 
