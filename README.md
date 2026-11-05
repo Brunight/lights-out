@@ -73,3 +73,7 @@ journal (`journalctl --user -u plasma-kwin_wayland`).
   the windows underneath.
 - An unplugged or disabled output is uncovered. Restarting KWin uncovers
   everything.
+
+## License
+
+GPL-3.0-or-later. See [LICENSE](LICENSE).

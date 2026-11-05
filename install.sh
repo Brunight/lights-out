@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# SPDX-FileCopyrightText: 2026 Brunight <brunorodriguesricardo@gmail.com>
+# SPDX-License-Identifier: GPL-3.0-or-later
 # Install (or upgrade) the Lights Out KWin script, enable it, and link the
 # `lights-out` CLI into ~/.local/bin.
 set -euo pipefail

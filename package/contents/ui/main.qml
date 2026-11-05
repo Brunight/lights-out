@@ -4,6 +4,9 @@
     so windows and the desktop don't get rearranged. Useful on OLED and
     local-dimming panels, where black pixels or zones are off.
 
+    SPDX-FileCopyrightText: 2026 Brunight <brunorodriguesricardo@gmail.com>
+    SPDX-License-Identifier: GPL-3.0-or-later
+
     Notes on KWin internal windows (checked against KWin 6.8):
     - They stack in the overlay layer, above panels and fullscreen windows.
     - They never take keyboard focus, so a cover can't steal keystrokes (and

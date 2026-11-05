@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# SPDX-FileCopyrightText: 2026 Brunight <brunorodriguesricardo@gmail.com>
+# SPDX-License-Identifier: GPL-3.0-or-later
 # lights-out: command-line front end for the "Lights Out" KWin script,
 # which "turns off" individual screens by covering them with black.
 set -euo pipefail

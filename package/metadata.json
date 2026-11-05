@@ -10,6 +10,7 @@
         "Description": "Turn off individual screens by covering them with black, without disconnecting them",
         "Icon": "video-display",
         "Id": "lightsout",
+        "License": "GPL-3.0-or-later",
         "Name": "Lights Out",
         "Version": "1.0"
     },
