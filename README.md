@@ -41,9 +41,6 @@ This installs the script with `kpackagetool6`, enables it, and links the
 KWin caches QML files until it restarts, so after upgrading a running script,
 log out and back in.
 
-To build the archive uploaded to the KDE Store, run `./package.sh`
-(writes `dist/lights-out-VERSION.kwinscript`).
-
 ## Use
 
 Global shortcuts (change them in System Settings > Keyboard > Shortcuts > KWin):
@@ -97,6 +94,18 @@ journal (`journalctl --user -u plasma-kwin_wayland`).
   the windows underneath.
 - An unplugged or disabled output is uncovered. Restarting KWin uncovers
   everything.
+
+## Releasing
+
+1. Bump `Version` in `package/metadata.json` and commit.
+2. Tag and push: `git tag -a v1.1 -m "Lights Out 1.1" && git push origin v1.1`.
+3. The [Release workflow](.github/workflows/release.yml) builds
+   `lights-out-1.1.kwinscript` and publishes a GitHub release with it. It
+   fails if the tag doesn't match the version in `metadata.json`.
+4. On the KDE Store page, add the new release file's URL and set the version.
+
+To build the archive locally, run `./package.sh` (writes
+`dist/lights-out-VERSION.kwinscript`).
 
 ## License
 

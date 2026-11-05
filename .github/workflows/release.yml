@@ -1,0 +1,41 @@
+# SPDX-FileCopyrightText: 2026 Brunight <brunorodriguesricardo@gmail.com>
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# Pushing a tag like v1.1 builds lights-out-1.1.kwinscript and publishes a
+# GitHub release with it attached. The tag must match "Version" in
+# package/metadata.json.
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check the tag matches the package version
+        run: |
+          version=$(python3 -c 'import json; print(json.load(open("package/metadata.json"))["KPlugin"]["Version"])')
+          if [ "v$version" != "$GITHUB_REF_NAME" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME doesn't match Version $version in package/metadata.json"
+            exit 1
+          fi
+
+      - name: Build the .kwinscript
+        id: build
+        run: echo "file=$(./package.sh)" >> "$GITHUB_OUTPUT"
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" "${{ steps.build.outputs.file }}" \
+            --title "Lights Out ${GITHUB_REF_NAME#v}" \
+            --generate-notes \
+            --verify-tag
