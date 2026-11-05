@@ -15,12 +15,19 @@ so windows and the desktop don't get rearranged.
 
 ## Install
 
-**From the KDE Store:** System Settings > Window Management > KWin Scripts >
-Get New..., search for "Lights Out", install it, then tick it and click Apply.
-This gives you the shortcuts and settings; the `lights-out` command-line tool
-comes with the source below.
+### KDE Store (recommended)
 
-**From source:**
+Lights Out is on the KDE Store:
+[store.kde.org/p/2381133](https://store.kde.org/p/2381133/).
+
+1. Open System Settings > Window Management > KWin Scripts.
+2. Click **Get New...**, search for "Lights Out" and install it.
+3. Tick **Lights Out** and click **Apply**.
+
+Updates arrive through the same dialog. This gives you the shortcuts and
+settings; for the `lights-out` command-line tool, install from source.
+
+### From source
 
 ```bash
 git clone https://github.com/Brunight/lights-out.git
