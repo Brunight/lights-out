@@ -14,8 +14,8 @@ Usage:
 
 OUTPUT is a connector name as shown by `kscreen-doctor -o` (DP-3, HDMI-A-1...).
 Global shortcuts (System Settings > Keyboard > Shortcuts > KWin):
-  Meta+Ctrl+B        toggle the screen under the cursor
-  Meta+Ctrl+Shift+B  uncover all screens
+  Meta+Ctrl+L        toggle the screen under the cursor
+  Meta+Ctrl+Shift+L  uncover all screens
   Screen Black: Toggle OUTPUT (one per output, unbound by default)
 EOF
 }

@@ -83,7 +83,7 @@ Item {
     ShortcutHandler {
         name: "Screen Black: Toggle Screen Under Cursor"
         text: "Screen Black: Toggle the screen under the cursor"
-        sequence: "Meta+Ctrl+B"
+        sequence: "Meta+Ctrl+L"
         onActivated: {
             const screen = Workspace.screenAt(Workspace.cursorPos);
             if (screen)
@@ -94,7 +94,7 @@ Item {
     ShortcutHandler {
         name: "Screen Black: Uncover All"
         text: "Screen Black: Uncover all screens"
-        sequence: "Meta+Ctrl+Shift+B"
+        sequence: "Meta+Ctrl+Shift+L"
         onActivated: root.covered = []
     }
 

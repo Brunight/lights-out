@@ -28,8 +28,8 @@ Global shortcuts (change them in System Settings > Keyboard > Shortcuts > KWin):
 
 | Shortcut            | Action                             |
 | ------------------- | ---------------------------------- |
-| `Meta+Ctrl+B`       | toggle the screen under the cursor |
-| `Meta+Ctrl+Shift+B` | uncover all screens                |
+| `Meta+Ctrl+L`       | toggle the screen under the cursor |
+| `Meta+Ctrl+Shift+L` | uncover all screens                |
 | (unbound)           | "Screen Black: Toggle OUTPUT", one per output |
 
 From a terminal:
@@ -49,7 +49,7 @@ journal (`journalctl --user -u plasma-kwin_wayland`).
 ## Limitations
 
 - Covers can't take keyboard focus (KWin never focuses its own windows), so
-  there's no "press Esc to uncover". Use `Meta+Ctrl+Shift+B` instead. On the
+  there's no "press Esc to uncover". Use `Meta+Ctrl+Shift+L` instead. On the
   plus side, a cover never takes keystrokes away from your other screens.
 - The mouse pointer stays visible over a covered screen: KWin doesn't apply
   cursor shapes to its own windows yet.
