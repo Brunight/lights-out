@@ -1,0 +1,17 @@
+{
+    "KPackageStructure": "KWin/Script",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "brunorodriguesricardo@gmail.com",
+                "Name": "Brunight"
+            }
+        ],
+        "Description": "Turn off individual screens by covering them with black, without disconnecting them",
+        "Icon": "video-display",
+        "Id": "screenblack",
+        "Name": "Screen Black",
+        "Version": "1.0"
+    },
+    "X-Plasma-API": "declarativescript"
+}

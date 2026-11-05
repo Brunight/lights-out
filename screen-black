@@ -1,0 +1,123 @@
+#!/usr/bin/env bash
+# screen-black: command-line front end for the "Screen Black" KWin script,
+# which "turns off" individual screens by covering them with black.
+set -euo pipefail
+
+usage() {
+    cat <<'EOF'
+Usage:
+  screen-black on OUTPUT...        cover the given outputs
+  screen-black off [OUTPUT...]     uncover (no args = all)
+  screen-black toggle [OUTPUT...]  toggle (no args = the screen under the cursor)
+  screen-black status
+  screen-black list                list available output names
+
+OUTPUT is a connector name as shown by `kscreen-doctor -o` (DP-3, HDMI-A-1...).
+Global shortcuts (System Settings > Keyboard > Shortcuts > KWin):
+  Meta+Ctrl+B        toggle the screen under the cursor
+  Meta+Ctrl+Shift+B  uncover all screens
+  Screen Black: Toggle OUTPUT (one per output, unbound by default)
+EOF
+}
+
+die() { echo "screen-black: $*" >&2; exit 1; }
+
+QDBUS=$(command -v qdbus6 || command -v qdbus) || die "qdbus6 not found"
+
+invoke() {
+    "$QDBUS" org.kde.kglobalaccel /component/kwin \
+        org.kde.kglobalaccel.Component.invokeShortcut "Screen Black: $1" >/dev/null
+}
+
+require_script() {
+    [[ $("$QDBUS" org.kde.KWin /Scripting org.kde.kwin.Scripting.isScriptLoaded screenblack) == true ]] ||
+        die "the Screen Black KWin script isn't running (run install.sh, or enable it in System Settings > Window Management > KWin Scripts)"
+}
+
+# Covered outputs, one per line. The script logs its state on every change;
+# read the newest such line from the running KWin instance's journal.
+covered() {
+    local inv
+    inv=$(systemctl --user show -p InvocationID --value plasma-kwin_wayland.service)
+    [[ -n $inv ]] || die "can't find the running KWin instance (plasma-kwin_wayland.service)"
+    journalctl --user "_SYSTEMD_INVOCATION_ID=$inv" -r -o cat --no-pager |
+        grep -m1 '^screen-black: covered=' | cut -d= -f2 | tr ',' '\n' | sed '/^$/d' || true
+}
+
+outputs() {
+    kscreen-doctor -o | sed 's/\x1b\[[0-9;]*m//g' | awk '/^Output:/ {print $3}'
+}
+
+is_covered() { covered | grep -qxF "$1"; }
+
+check_outputs() {
+    local all o
+    all=$(outputs)
+    for o in "$@"; do
+        grep -qxF "$o" <<<"$all" || die "no output named '$o' (available: $(echo $all))"
+    done
+}
+
+# The script applies a toggle asynchronously; wait for its state line so
+# that back-to-back commands see the new state.
+wait_for() {  # wait_for OUTPUT yes|no
+    local i want=$2
+    for i in {1..40}; do
+        if is_covered "$1"; then [[ $want == yes ]] && return; else [[ $want == no ]] && return; fi
+        sleep 0.05
+    done
+}
+
+set_output() {  # set_output OUTPUT yes|no
+    local now=no
+    is_covered "$1" && now=yes
+    if [[ $now == "$2" ]]; then
+        echo "$1: already $([[ $2 == yes ]] && echo black || echo normal)"
+        return
+    fi
+    invoke "Toggle $1"
+    wait_for "$1" "$2"
+    echo "$1: $([[ $2 == yes ]] && echo black || echo restored)"
+}
+
+cmd=${1:-}
+[[ $# -gt 0 ]] && shift
+case $cmd in
+    -h | --help | help | "")
+        usage ;;
+    list)
+        outputs ;;
+    status)
+        require_script
+        act=$(covered)
+        for o in $(outputs); do
+            if grep -qxF "$o" <<<"$act"; then echo "$o: black"; else echo "$o: normal"; fi
+        done ;;
+    on)
+        [[ $# -gt 0 ]] || die "give at least one output (see \`screen-black list\`)"
+        require_script; check_outputs "$@"
+        for o in "$@"; do set_output "$o" yes; done ;;
+    off)
+        require_script
+        if [[ $# -eq 0 ]]; then
+            invoke "Uncover All"
+            echo "all screens restored"
+        else
+            check_outputs "$@"
+            for o in "$@"; do set_output "$o" no; done
+        fi ;;
+    toggle)
+        require_script
+        if [[ $# -eq 0 ]]; then
+            invoke "Toggle Screen Under Cursor"
+        else
+            check_outputs "$@"
+            for o in "$@"; do
+                if is_covered "$o"; then set_output "$o" no; else set_output "$o" yes; fi
+            done
+        fi ;;
+    *)
+        echo "screen-black: unknown command '$cmd'" >&2
+        usage >&2
+        exit 1 ;;
+esac
